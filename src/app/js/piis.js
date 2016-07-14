@@ -134,5 +134,7 @@ function toXml() {
   );
 
   var xmlString = "<?xml version='1.0' ?>\n" + nodeToString(xmlDoc)
-  alert(xmlString);
+
+  var xmlWindow = window.open('data:text/xml;charset=utf-8,' + escape(xmlString));
+  xmlWindow.focus();
 }
