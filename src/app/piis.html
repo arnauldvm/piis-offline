@@ -22,6 +22,7 @@
     <label>Président <input id="-center+president+name"></label>
     <label>M<input name="-center+president+genre" id="-center+president+genre+M" type="radio"></label>
     <label>F<input name="-center+president+genre" id="-center+president+genre+F" type="radio"></label>
+    <output id="-center+president+genre"></output>
     <output id="-center+president+genre-title"></output>
     <output id="-center+president+genre-function"></output>
   </span>
@@ -29,6 +30,7 @@
     <label>Directeur général <input id="-center+director+name"></label>
     <label>M<input name="-center+director+genre" id="-center+director+genre+M" type="radio"></label>
     <label>F<input name="-center+director+genre" id="-center+director+genre+F" type="radio"></label>
+    <output id="-center+director+genre"></output>
     <output id="-center+director+genre-title"></output>
     <output id="-center+director+genre-function"></output>
   </span>
@@ -49,6 +51,7 @@
     <label>Prénom <input id="-beneficiary+firstname"/></label>
     <label>M<input name="-beneficiary+genre" id="-beneficiary+genre+M" type="radio"></label>
     <label>F<input name="-beneficiary+genre" id="-beneficiary+genre+F" type="radio"></label>
+    <output id="-beneficiary+genre"></output>
     <output id="-beneficiary+genre-title"></output>
     <output id="-beneficiary+genre-born"></output>
     <output id="-beneficiary+genre-called"></output>
@@ -74,22 +77,37 @@
 
 <div id="contract">
   <script>
-    function addDynamicGenreField(modelFieldIdGenrePrefix, suffix, valueM, valueF) {
-      addDynamicField(modelFieldIdGenrePrefix + suffix, [modelFieldIdGenrePrefix+"+M", modelFieldIdGenrePrefix+"+F"],
+    function addDynamicGenreField(modelFieldIdGenrePrefix) {
+      addDynamicField(modelFieldIdGenrePrefix, [modelFieldIdGenrePrefix+"+M", modelFieldIdGenrePrefix+"+F"],
         data => {
-          if ("on" === data[modelFieldIdGenrePrefix+"+M"]) return valueM;
-          if ("on" === data[modelFieldIdGenrePrefix+"+F"]) return valueF;
+          if ("on" === data[modelFieldIdGenrePrefix+"+M"]) return "M";
+          if ("on" === data[modelFieldIdGenrePrefix+"+F"]) return "F";
           return "";
         }
       );
     }
-    addDynamicGenreField("-beneficiary+genre", "-title", "M.", "Mme");
-    addDynamicGenreField("-beneficiary+genre", "-born", "né", "née");
-    addDynamicGenreField("-beneficiary+genre", "-called", "dénommé", "dénommée");
-    addDynamicGenreField("-center+president+genre", "-title", "M.", "Mme");
-    addDynamicGenreField("-center+president+genre", "-function", "Président", "Présidente");
-    addDynamicGenreField("-center+director+genre", "-title", "M.", "Mme");
-    addDynamicGenreField("-center+director+genre", "-function", "Directeur général", "Directrice générale");
+    addDynamicGenreField("-beneficiary+genre");
+    addDynamicGenreField("-center+president+genre");
+    addDynamicGenreField("-center+director+genre");
+
+    function addDynamicGenreDerivedField(modelFieldIdGenre, suffix, valueM, valueF) {
+      addDynamicField(modelFieldIdGenre + suffix, [modelFieldIdGenre],
+        data => {
+          switch (data[modelFieldIdGenre]) {
+            case "M": return valueM;
+            case "F": return valueF;
+            default: return "";
+          }
+        }
+      );
+    }
+    addDynamicGenreDerivedField("-beneficiary+genre", "-title", "M.", "Mme");
+    addDynamicGenreDerivedField("-beneficiary+genre", "-born", "né", "née");
+    addDynamicGenreDerivedField("-beneficiary+genre", "-called", "dénommé", "dénommée");
+    addDynamicGenreDerivedField("-center+president+genre", "-title", "M.", "Mme");
+    addDynamicGenreDerivedField("-center+president+genre", "-function", "Président", "Présidente");
+    addDynamicGenreDerivedField("-center+director+genre", "-title", "M.", "Mme");
+    addDynamicGenreDerivedField("-center+director+genre", "-function", "Directeur général", "Directrice générale");
 
     function emptyIfUndef(value) {
       if (typeof value != 'undefined' && value) return value;
