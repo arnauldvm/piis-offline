@@ -11,6 +11,10 @@ function getModelField(modelFieldId) {
 
 function sync(evt) {
   var inputElement = evt.target;
+  if (!inputElement.checkValidity()) {
+    // Unfortunately the browser does not display the error message automatically (unless the form is submitted under Chrome)
+    alert("Valeur incorrecte!\n(Valeurs autorisées : " + inputElement.title + ")");
+  }
   var modelFieldId = inputElement.id;
   var field = getModelField(modelFieldId);
   field.value = inputElement.value;
