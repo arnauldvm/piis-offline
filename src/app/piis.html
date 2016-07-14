@@ -1,0 +1,43 @@
+<title>PIIS offline</title>
+<link rel="stylesheet" href="css/piis.css">
+
+<div id="form">
+  <h1>Projet Individualisé d'Intégration Sociale</h1>
+
+  <span class="input">
+    <label for="-center">CPAS de</label>
+    <select id="-center"></select>
+  </span>
+  <span class="input">
+    <label for="-inscode">Code INS</label>
+    <input id="-inscode"/>
+</span>
+  <span class="input">
+    <label for="-president">Président</label>
+    <input name="-president">
+    <label for="-president+genre+M">M</label><input name="-president+genre" id="-president+genre+M" type="radio">
+    <label for="-president+genre+F">F</label><input name="-president+genre" id="-president+genre+F" type="radio">
+  </span>
+  <span class="input">
+    <label for="-director">Directeur général</label>
+    <input name="-director">
+    <label for="-director+genre+M">M</label><input name="-director+genre" id="-director+genre+M" type="radio">
+    <label for="-director+genre+F">F</label><input name="-director+genre" id="-director+genre+F" type="radio">
+  </span>
+
+  <h2>Bénéficiaire du PIIS</h2>
+  <span class="input">
+    <label for="-beneficiary+fullname">Nom</label>
+    <input id="-beneficiary+fullname"/></span>
+  <span class="input">
+    <label for="-beneficiary+firstname">Prénom</label>
+    <input id="-beneficiary+firstname"/>
+  </span>
+  <span class="input">
+    <label for="-beneficiary+nrn">Numéro du Registre National</label>
+    <input id="-beneficiary+nrn" pattern="\d{3}/>
+  </span>
+</div>
+
+<div id="contract">
+</div>
