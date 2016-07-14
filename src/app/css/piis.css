@@ -18,6 +18,10 @@ div#form {
   border-bottom: thin solid;
 }
 
+div#form output {
+  display: none;
+}
+
 @media print {
   div#form {
     display: none;

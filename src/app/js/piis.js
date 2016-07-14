@@ -27,7 +27,7 @@ function notifyAll(modelFieldId) {
 function registerAllOutputs(tagName) {
   var elements = Array.from(document.getElementsByTagName(tagName));
     // getElementsByTagName is HTMLCollection, not Array!
-  elements.forEach(function(element) {
+  elements.forEach(element => {
     if (!element.hasAttribute("idref")) return;
     var modelFieldId = element.getAttribute("idref");
     console.info(`output: ${modelFieldId}`);
@@ -40,7 +40,7 @@ function registerAllOutputs(tagName) {
 function registerAllInputs(tagName) {
   var elements = Array.from(document.getElementsByTagName(tagName));
     // getElementsByTagName is HTMLCollection, not Array!
-  elements.forEach(function(element) {
+  elements.forEach(element => {
     if (!element.hasAttribute("id")) return;
     console.info("input: " + element.id);
     element.addEventListener("change", sync);
@@ -48,10 +48,10 @@ function registerAllInputs(tagName) {
 }
 
 function addDynamicField(modelFieldId, inputFieldsIds, compute) {
-  outputElement = document.getElementById(modelFieldId);
+  var outputElement = document.getElementById(modelFieldId);
   outputElement.data = {};
   dynamicField = getModelField(modelFieldId);
-  inputFieldsIds.forEach(function(inputFieldId) {
+  inputFieldsIds.forEach(inputFieldId => {
     getModelField(inputFieldId).callbacks.push(function(fieldValue) {
       outputElement.data[inputFieldId] = fieldValue;
       outputElement.value = compute(outputElement.data);

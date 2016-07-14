@@ -32,21 +32,39 @@
     <output id="-center+director+genre-title"></output>
     <output id="-center+director+genre-function"></output>
   </span>
-  <span class="input" style="width: 90%;"><output id="-center+address"></output></span>
+  <span class="input"><label>Rue <input id="-center+address+street"/></label></span>
+  <span class="input"><label>Numéro <input id="-center+address+streetnumber"/></label></span>
+  <span class="input"><label>Code postal <input id="-center+address+zip"/></label></span>
+  <span class="input"><label>Localité <input id="-center+address+locality"/></label></span>
+    <!-- TODO: "Commune" instead of "Localité"? -->
+  <output id="-center+address"></output>
   </fieldset>
 
   <fieldset id="form+beneficiary">
   <h2>Bénéficiaire du PIIS</h2>
-  <span class="input"><label>Nom <output id="-beneficiary+genre-title"></output> <input id="-beneficiary+lastname"/></label> (<output id="-beneficiary+genre-called"></output>)</span>
-  <span class="input"><label>Prénom <input id="-beneficiary+firstname"/></label></span>
-  <span class="input" style="width: 100%"><label for="-beneficiary+nrn">Numéro du Registre National
-      <input id="-beneficiary+nrn" pattern="(\d[.\- ]*){11}" title="11 chiffres"/></label> (<output id="-beneficiary+genre-born"></output>)</span>
+  <span class="input">
+    <label>Nom <input id="-beneficiary+lastname"/></label>
+  </span>
+  <span class="input">
+    <label>Prénom <input id="-beneficiary+firstname"/></label>
+    <label>M<input name="-beneficiary+genre" id="-beneficiary+genre+M" type="radio"></label>
+    <label>F<input name="-beneficiary+genre" id="-beneficiary+genre+F" type="radio"></label>
+    <output id="-beneficiary+genre-title"></output>
+    <output id="-beneficiary+genre-born"></output>
+    <output id="-beneficiary+genre-called"></output>
+  </span>
+  <span class="input">
+    <label>Numéro du Registre National <input id="-beneficiary+nrn" pattern="(\d[.\- ]*){11}" title="11 chiffres"/></label>
+  </span>
+  <span class="input">
+    <label>Date de naissance <input id="-beneficiary+birthdate" type="date"/></label>
+  </span>
   <span class="input"><label>Rue <input id="-beneficiary+address+street"/></label></span>
   <span class="input"><label>Numéro <input id="-beneficiary+address+streetnumber"/></label></span>
   <span class="input"><label>Code postal <input id="-beneficiary+address+zip"/></label></span>
   <span class="input"><label>Localité <input id="-beneficiary+address+locality"/></label></span>
     <!-- TODO: "Commune" instead of "Localité"? -->
-  <span class="input" style="width: 90%;"><output id="-beneficiary+address"></output></span>
+  <output id="-beneficiary+address"></output>
   </fieldset>
 </div>
 
@@ -54,7 +72,7 @@
   <script>
     function addDynamicGenreField(modelFieldIdGenrePrefix, suffix, valueM, valueF) {
       addDynamicField(modelFieldIdGenrePrefix + suffix, [modelFieldIdGenrePrefix+"+M", modelFieldIdGenrePrefix+"+F"],
-        function(data) {
+        data => {
           if ("on" === data[modelFieldIdGenrePrefix+"+M"]) return valueM;
           if ("on" === data[modelFieldIdGenrePrefix+"+F"]) return valueF;
           return "";
@@ -77,7 +95,7 @@
       addDynamicField(modelFieldIdAddressPrefix,
         [modelFieldIdAddressPrefix+"+streetnumber", modelFieldIdAddressPrefix+"+street",
          modelFieldIdAddressPrefix+"+zip", modelFieldIdAddressPrefix+"+locality"],
-        function(data) {
+        data => {
           var streetnumber = emptyIfUndef(data[modelFieldIdAddressPrefix+"+streetnumber"]);
           var street = emptyIfUndef(data[modelFieldIdAddressPrefix+"+street"]);
           var zip = emptyIfUndef(data[modelFieldIdAddressPrefix+"+zip"]);
