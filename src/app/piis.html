@@ -20,17 +20,15 @@
   <span class="input"><label>Code INS <input id="-center+inscode" placeholder="00000" pattern="\d{5}" type="text" title="5 chiffres"/></label></span>
   <span class="input">
     <label>Président <input id="-center+president+name"></label>
-    <label>M<input name="-center+president+genre" id="-center+president+genre+M" type="radio"></label>
-    <label>F<input name="-center+president+genre" id="-center+president+genre+F" type="radio"></label>
-    <output id="-center+president+genre"></output>
+    <label>M<input name="-center+president+genre" type="radio" value="M"></label>
+    <label>F<input name="-center+president+genre" type="radio" value="F"></label>
     <output id="-center+president+genre-title"></output>
     <output id="-center+president+genre-function"></output>
   </span>
   <span class="input">
     <label>Directeur général <input id="-center+director+name"></label>
-    <label>M<input name="-center+director+genre" id="-center+director+genre+M" type="radio"></label>
-    <label>F<input name="-center+director+genre" id="-center+director+genre+F" type="radio"></label>
-    <output id="-center+director+genre"></output>
+    <label>M<input name="-center+director+genre" type="radio" value="M"></label>
+    <label>F<input name="-center+director+genre" type="radio" value="F"></label>
     <output id="-center+director+genre-title"></output>
     <output id="-center+director+genre-function"></output>
   </span>
@@ -49,9 +47,8 @@
   </span>
   <span class="input">
     <label>Prénom <input id="-beneficiary+firstname"/></label>
-    <label>M<input name="-beneficiary+genre" id="-beneficiary+genre+M" type="radio"></label>
-    <label>F<input name="-beneficiary+genre" id="-beneficiary+genre+F" type="radio"></label>
-    <output id="-beneficiary+genre"></output>
+    <label>M<input name="-beneficiary+genre" type="radio" value="M"></label>
+    <label>F<input name="-beneficiary+genre" type="radio" value="F"></label>
     <output id="-beneficiary+genre-title"></output>
     <output id="-beneficiary+genre-born"></output>
     <output id="-beneficiary+genre-called"></output>
@@ -79,19 +76,6 @@
 
 <div id="contract">
   <script>
-    function addDynamicGenreField(modelFieldIdGenrePrefix) {
-      addDynamicField(modelFieldIdGenrePrefix, [modelFieldIdGenrePrefix+"+M", modelFieldIdGenrePrefix+"+F"],
-        data => {
-          if ("on" === data[modelFieldIdGenrePrefix+"+M"]) return "M";
-          if ("on" === data[modelFieldIdGenrePrefix+"+F"]) return "F";
-          return "";
-        }
-      );
-    }
-    addDynamicGenreField("-beneficiary+genre");
-    addDynamicGenreField("-center+president+genre");
-    addDynamicGenreField("-center+director+genre");
-
     function addDynamicGenreDerivedField(modelFieldIdGenre, suffix, valueM, valueF) {
       addDynamicField(modelFieldIdGenre + suffix, [modelFieldIdGenre],
         data => {

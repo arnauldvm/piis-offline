@@ -9,13 +9,20 @@ function getModelField(modelFieldId) {
   return field;
 }
 
+function getIdAttrName(eltType) {
+  switch (eltType) {
+    case "radio": return "name";
+    default: return "id";
+  }
+}
+
 function sync(evt) {
   var inputElement = evt.target;
   if (!inputElement.checkValidity()) {
     // Unfortunately the browser does not display the error message automatically (unless the form is submitted under Chrome)
     alert("Valeur incorrecte!\n(Valeurs autorisées : " + inputElement.title + ")");
   }
-  var modelFieldId = inputElement.id;
+  var modelFieldId = inputElement.getAttribute(getIdAttrName(inputElement.type));
   var field = getModelField(modelFieldId);
   field.value = inputElement.value;
   notifyAll(modelFieldId);
@@ -34,7 +41,7 @@ function registerAllOutputs(tagName) {
   elements.forEach(element => {
     if (!element.hasAttribute("idref")) return;
     var modelFieldId = element.getAttribute("idref");
-    console.info(`output: ${modelFieldId}`);
+    console.info(`output: @idref=${modelFieldId}`);
     getModelField(modelFieldId).callbacks.push(function(fieldValue) {
       element.value = fieldValue;
     });
@@ -45,8 +52,9 @@ function registerAllInputs(tagName) {
   var elements = Array.from(document.getElementsByTagName(tagName));
     // getElementsByTagName is HTMLCollection, not Array!
   elements.forEach(element => {
-    if (!element.hasAttribute("id")) return;
-    console.info("input: " + element.id);
+    var idAttrName = getIdAttrName(element.type);
+    if (!element.hasAttribute(idAttrName)) return;
+    console.info(`input: @${idAttrName}=${element.getAttribute(idAttrName)}`);
     element.addEventListener("change", sync);
   });
 }
@@ -170,16 +178,15 @@ function fromXml(xmlString) {
     inputElement.value = value;
     inputElement.dispatchEvent(new Event("change"));
   }
-  function sg(node, modelFieldIdPrefix) {
+  function sr(node, modelFieldId) {
     var value = node.textContent;
     if (value === undefined || value === null) return;
-    console.info(`Set genre ${value} with prefix ${modelFieldIdPrefix}`);
-    var inputElementM = document.getElementById(modelFieldIdPrefix + "+M");
-    var inputElementF = document.getElementById(modelFieldIdPrefix + "+F");
-    inputElementM.checked = (value=='M');
-    inputElementF.checked = (value=='F');
-    inputElementM.dispatchEvent(new Event("change"));
-    inputElementF.dispatchEvent(new Event("change"));
+    console.info(`Set ${value} to radio ${modelFieldId}`);
+    var inputElements = Array.from(document.getElementsByName(modelFieldId));
+    inputElements.forEach(e => {
+      e.checked = (e.value === value);
+      if (e.checked) e.dispatchEvent(new Event("change"));
+    });
   }
 
   p(xmlDoc, {
@@ -188,11 +195,11 @@ function fromXml(xmlString) {
       'inscode': n => s(n, '-center+inscode'),
       'president': n => p(n, {
         'name': n => s(n, '-center+president+name'),
-        'genre': n => sg(n, '-center+president+genre')
+        'genre': n => sr(n, '-center+president+genre')
       }),
       'director':  n => p(n, {
         'name': n => s(n, '-center+director+name'),
-        'genre': n => sg(n, '-center+director+genre')
+        'genre': n => sr(n, '-center+director+genre')
       }),
       'address': n => p(n, {
         'street': n => s(n, '-center+address+street'),
@@ -204,7 +211,7 @@ function fromXml(xmlString) {
     'beneficiary': n => p(n, {
       'lastname': n => s(n, '-beneficiary+lastname'),
       'firstname': n => s(n, '-beneficiary+firstname'),
-      'genre': n => sg(n, '-beneficiary+genre'),
+      'genre': n => sr(n, '-beneficiary+genre'),
       'nrn': n => s(n, '-beneficiary+nrn'),
       'birthdate': n => s(n, '-beneficiary+birthdate'),
       'address': n => p(n, {
