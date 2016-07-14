@@ -13,8 +13,13 @@ div#form, div#form div {
 }
 
 div#form {
-  padding-bottom: 1cm;
-  margin-bottom: 1cm;
+  padding-bottom: 0.5cm;
+  /*margin-bottom: 0.5cm;*/
+}
+
+div#buttons {
+  padding-bottom: 0.5cm;
+  margin-bottom: 0.5cm;
   border-bottom: thin solid;
 }
 
@@ -29,7 +34,7 @@ input:invalid {
 
 /* Hide form when printing */
 @media print {
-  div#form {
+  div#form, div#buttons {
     display: none;
   }
 }
