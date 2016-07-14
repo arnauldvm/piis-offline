@@ -32,6 +32,14 @@ input:invalid {
   border-color: #DD2C00;
 }
 
+.pseudobutton {
+  font-family: sans-serif, helvetica;
+  font-size: 0.7em;
+  border-radius: 5px;
+  border: thin outset lightgrey;
+  padding: 1px 1em 2px 1em;
+}
+
 /* Hide form when printing */
 @media print {
   div#form, div#buttons {

@@ -138,3 +138,89 @@ function toXml() {
   var xmlWindow = window.open('data:text/xml;charset=utf-8,' + escape(xmlString));
   xmlWindow.focus();
 }
+
+function readFile(file, callback) { // after http://stackoverflow.com/a/26298948
+  var reader = new FileReader();
+  reader.onload = evt => callback(evt.target.result);
+  reader.readAsText(file);
+}
+
+function parseXml(str) {
+  return (new DOMParser()).parseFromString(str, "text/xml");
+}
+
+function fromXml(xmlString) {
+  var xmlDoc = parseXml(xmlString);
+
+  function p(node, map) {
+    for (tag in map) {
+      var FUN = map[tag];
+      Array.from(node.getElementsByTagName(tag)).forEach(child => {
+        console.info(`Parsing ${tag}`);
+        FUN(child);
+      });
+    }
+  }
+
+  function s(node, modelFieldId) {
+    var value = node.textContent;
+    if (value === undefined || value === null) return;
+    console.info(`Set ${value} to ${modelFieldId}`);
+    var inputElement = document.getElementById(modelFieldId);
+    inputElement.value = value;
+    inputElement.dispatchEvent(new Event("change"));
+  }
+  function sg(node, modelFieldIdPrefix) {
+    var value = node.textContent;
+    if (value === undefined || value === null) return;
+    console.info(`Set genre ${value} with prefix ${modelFieldIdPrefix}`);
+    var inputElementM = document.getElementById(modelFieldIdPrefix + "+M");
+    var inputElementF = document.getElementById(modelFieldIdPrefix + "+F");
+    inputElementM.checked = (value=='M');
+    inputElementF.checked = (value=='F');
+    inputElementM.dispatchEvent(new Event("change"));
+    inputElementF.dispatchEvent(new Event("change"));
+  }
+
+  p(xmlDoc, {
+    'center': n => p(n, {
+      'municipality': n => s(n, '-center+municipality'),
+      'inscode': n => s(n, '-center+inscode'),
+      'president': n => p(n, {
+        'name': n => s(n, '-center+president+name'),
+        'genre': n => sg(n, '-center+president+genre')
+      }),
+      'director':  n => p(n, {
+        'name': n => s(n, '-center+director+name'),
+        'genre': n => sg(n, '-center+director+genre')
+      }),
+      'address': n => p(n, {
+        'street': n => s(n, '-center+address+street'),
+        'streetnumber': n => s(n, '-center+address+streetnumber'),
+        'zip': n => s(n, '-center+address+zip'),
+        'locality': n => s(n, '-center+address+locality')
+      }),
+    }),
+    'beneficiary': n => p(n, {
+      'lastname': n => s(n, '-beneficiary+lastname'),
+      'firstname': n => s(n, '-beneficiary+firstname'),
+      'genre': n => sg(n, '-beneficiary+genre'),
+      'nrn': n => s(n, '-beneficiary+nrn'),
+      'birthdate': n => s(n, '-beneficiary+birthdate'),
+      'address': n => p(n, {
+        'street': n => s(n, '-beneficiary+address+street'),
+        'streetnumber': n => s(n, '-beneficiary+address+streetnumber'),
+        'zip': n => s(n, '-beneficiary+address+zip'),
+        'locality': n => s(n, '-beneficiary+address+locality')
+      })
+    })
+  })
+}
+
+function readXmlFile(input) {
+  var file = input.files[0];
+  if (!file) {
+    return;
+  }
+  readFile(file, result => fromXml(result));
+}
