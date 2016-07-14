@@ -2,7 +2,24 @@ h1 {
   text-align: center;
 }
 
-.input {
-  width: 50%;
+div#form .input {
+  width: 45%;
   float: left;
+  margin: 0.3em;
+}
+
+div#form, div#form div {
+  overflow: auto;
+}
+
+div#form {
+  padding-bottom: 1cm;
+  margin-bottom: 1cm;
+  border-bottom: thin solid;
+}
+
+@media print {
+  div#form {
+    display: none;
+  }
 }

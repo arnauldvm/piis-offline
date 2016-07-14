@@ -1,43 +1,117 @@
 <title>PIIS offline</title>
 <link rel="stylesheet" href="css/piis.css">
+<script src="js/piis.js"></script>
 
+<datalist id="list.municipalities">
+  <option value="Aalter">
+  <option value="Aartselaar">
+  <option value="Aerschot">
+  <option value="Affligem">
+  <option value="Bruxelles">
+  <option value="Liège">
+</datalist>
+
+<body onload="registerAllOutputs('output'); registerAllInputs('input'); registerAllInputs('output')">
 <div id="form">
   <h1>Projet Individualisé d'Intégration Sociale</h1>
 
+  <fieldset id="form+center">
+  <span class="input"><label>CPAS de <input id="-center+municipality" list="list.municipalities"></label></span>
+  <span class="input"><label>Code INS <input id="-center+inscode"/></label></span>
   <span class="input">
-    <label for="-center">CPAS de</label>
-    <select id="-center"></select>
+    <label>Président <input id="-center+president+name"></label>
+    <label>M<input name="-center+president+genre" id="-center+president+genre+M" type="radio"></label>
+    <label>F<input name="-center+president+genre" id="-center+president+genre+F" type="radio"></label>
+    <output id="-center+president+genre-title"></output>
+    <output id="-center+president+genre-function"></output>
   </span>
   <span class="input">
-    <label for="-inscode">Code INS</label>
-    <input id="-inscode"/>
-</span>
-  <span class="input">
-    <label for="-president">Président</label>
-    <input name="-president">
-    <label for="-president+genre+M">M</label><input name="-president+genre" id="-president+genre+M" type="radio">
-    <label for="-president+genre+F">F</label><input name="-president+genre" id="-president+genre+F" type="radio">
+    <label>Directeur général <input id="-center+director+name"></label>
+    <label>M<input name="-center+director+genre" id="-center+director+genre+M" type="radio"></label>
+    <label>F<input name="-center+director+genre" id="-center+director+genre+F" type="radio"></label>
+    <output id="-center+director+genre-title"></output>
+    <output id="-center+director+genre-function"></output>
   </span>
-  <span class="input">
-    <label for="-director">Directeur général</label>
-    <input name="-director">
-    <label for="-director+genre+M">M</label><input name="-director+genre" id="-director+genre+M" type="radio">
-    <label for="-director+genre+F">F</label><input name="-director+genre" id="-director+genre+F" type="radio">
-  </span>
+  <span class="input" style="width: 90%;"><output id="-center+address"></output></span>
+  </fieldset>
 
+  <fieldset id="form+beneficiary">
   <h2>Bénéficiaire du PIIS</h2>
-  <span class="input">
-    <label for="-beneficiary+fullname">Nom</label>
-    <input id="-beneficiary+fullname"/></span>
-  <span class="input">
-    <label for="-beneficiary+firstname">Prénom</label>
-    <input id="-beneficiary+firstname"/>
-  </span>
-  <span class="input">
-    <label for="-beneficiary+nrn">Numéro du Registre National</label>
-    <input id="-beneficiary+nrn" pattern="\d{3}/>
-  </span>
+  <span class="input"><label>Nom <output id="-beneficiary+genre-title"></output> <input id="-beneficiary+lastname"/></label> (<output id="-beneficiary+genre-called"></output>)</span>
+  <span class="input"><label>Prénom <input id="-beneficiary+firstname"/></label></span>
+  <span class="input" style="width: 100%"><label for="-beneficiary+nrn">Numéro du Registre National
+      <input id="-beneficiary+nrn" pattern="(\d[.\- ]*){11}" title="11 chiffres"/></label> (<output id="-beneficiary+genre-born"></output>)</span>
+  <span class="input"><label>Rue <input id="-beneficiary+address+street"/></label></span>
+  <span class="input"><label>Numéro <input id="-beneficiary+address+streetnumber"/></label></span>
+  <span class="input"><label>Code postal <input id="-beneficiary+address+zip"/></label></span>
+  <span class="input"><label>Localité <input id="-beneficiary+address+locality"/></label></span>
+    <!-- TODO: "Commune" instead of "Localité"? -->
+  <span class="input" style="width: 90%;"><output id="-beneficiary+address"></output></span>
+  </fieldset>
 </div>
 
 <div id="contract">
+  <script>
+    function addDynamicGenreField(modelFieldIdGenrePrefix, suffix, valueM, valueF) {
+      addDynamicField(modelFieldIdGenrePrefix + suffix, [modelFieldIdGenrePrefix+"+M", modelFieldIdGenrePrefix+"+F"],
+        function(data) {
+          if ("on" === data[modelFieldIdGenrePrefix+"+M"]) return valueM;
+          if ("on" === data[modelFieldIdGenrePrefix+"+F"]) return valueF;
+          return "";
+        }
+      );
+    }
+    addDynamicGenreField("-beneficiary+genre", "-title", "M.", "Mme");
+    addDynamicGenreField("-beneficiary+genre", "-born", "né", "née");
+    addDynamicGenreField("-beneficiary+genre", "-called", "dénommé", "dénommée");
+    addDynamicGenreField("-center+president+genre", "-title", "M.", "Mme");
+    addDynamicGenreField("-center+president+genre", "-function", "Président", "Présidente");
+    addDynamicGenreField("-center+director+genre", "-title", "M.", "Mme");
+    addDynamicGenreField("-center+director+genre", "-function", "Directeur général", "Directrice générale");
+
+    function emptyIfUndef(value) {
+      if (typeof value != 'undefined' && value) return value;
+      return  "";
+    }
+    function addDynamicAddressField(modelFieldIdAddressPrefix) {
+      addDynamicField(modelFieldIdAddressPrefix,
+        [modelFieldIdAddressPrefix+"+streetnumber", modelFieldIdAddressPrefix+"+street",
+         modelFieldIdAddressPrefix+"+zip", modelFieldIdAddressPrefix+"+locality"],
+        function(data) {
+          var streetnumber = emptyIfUndef(data[modelFieldIdAddressPrefix+"+streetnumber"]);
+          var street = emptyIfUndef(data[modelFieldIdAddressPrefix+"+street"]);
+          var zip = emptyIfUndef(data[modelFieldIdAddressPrefix+"+zip"]);
+          var locality = emptyIfUndef(data[modelFieldIdAddressPrefix+"+locality"]);
+          return `${streetnumber} ${street}, ${zip} ${locality}`;
+        }
+      );
+    }
+    addDynamicAddressField("-center+address");
+    addDynamicAddressField("-beneficiary+address");
+  </script>
+  <h1>Contrat relatif au Projet Individualisé d'Intégration Sociale</h1>
+
+  <p>Il est établi un contrat relatif à un projet individualisé d'intégration sociale entre&nbsp;:</p>
+
+  <p>d'une part,
+    <output idref="-beneficiary+genre-title"></output> <output idref="-beneficiary+lastname"></output>,
+    <output idref="-beneficiary+genre-born"></output> le <output idref="-beneficiary+birthdate"></output>,
+    résident à <output idref="-beneficiary+address"></output>
+  </p>
+
+  <p>ci-après <output idref="-beneficiary+genre-called"></output> «&nbsp;le bénéficiaire&nbsp;»</p>
+
+  <p>et,</p>
+
+  <p>d'autre part, le CPAS de <output idref="-center+municipality"></output> sis à <output idref="-center+address"></output>,
+    représenté par
+    <output idref="-center+president+genre-title"></output> <output idref="-center+president+name"></output>, <output idref="-center+president+genre-function"></output>
+    et
+    <output idref="-center+director+genre-title"></output> <output idref="-center+director+name"></output>, <output idref="-center+director+genre-function"></output>,
+  </p>
+
+  <p>ci-après dénommé «&nbsp;le Centre&nbsp;»</p>
+
 </div>
+
+</body>
