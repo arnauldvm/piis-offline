@@ -41,7 +41,7 @@ function registerAllOutputs(tagName) {
   elements.forEach(element => {
     if (!element.hasAttribute("idref")) return;
     var modelFieldId = element.getAttribute("idref");
-    console.info(`output: @idref=${modelFieldId}`);
+    console.debug(`output: @idref=${modelFieldId}`);
     getModelField(modelFieldId).callbacks.push(function(fieldValue) {
       element.value = fieldValue;
     });
@@ -54,7 +54,7 @@ function registerAllInputs(tagName) {
   elements.forEach(element => {
     var idAttrName = getIdAttrName(element.type);
     if (!element.hasAttribute(idAttrName)) return;
-    console.info(`input: @${idAttrName}=${element.getAttribute(idAttrName)}`);
+    console.debug(`input: @${idAttrName}=${element.getAttribute(idAttrName)}, @value=${element.value}`);
     element.addEventListener("change", sync);
   });
 }

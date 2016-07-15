@@ -98,7 +98,7 @@ function fromXml(xmlString) {
     for (tag in map) {
       var FUN = map[tag];
       Array.from(node.getElementsByTagName(tag)).forEach(child => {
-        console.info(`Parsing ${tag}`);
+        console.debug(`Parsing ${tag}`);
         FUN(child);
       });
     }
@@ -107,7 +107,7 @@ function fromXml(xmlString) {
   function s(node, modelFieldId) {
     var value = node.textContent;
     if (value === undefined || value === null) return;
-    console.info(`Set ${value} to ${modelFieldId}`);
+    console.debug(`Set ${value} to ${modelFieldId}`);
     var inputElement = document.getElementById(modelFieldId);
     inputElement.value = value;
     inputElement.dispatchEvent(new Event("change"));
@@ -115,7 +115,7 @@ function fromXml(xmlString) {
   function sr(node, modelFieldId) {
     var value = node.textContent;
     if (value === undefined || value === null) return;
-    console.info(`Set ${value} to radio ${modelFieldId}`);
+    console.debug(`Set ${value} to radio ${modelFieldId}`);
     var inputElements = Array.from(document.getElementsByName(modelFieldId));
     inputElements.forEach(e => {
       e.checked = (e.value === value);
