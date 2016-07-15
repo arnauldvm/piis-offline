@@ -158,7 +158,7 @@ function fromXml(xmlString) {
   })
 }
 
-function readXmlFile(input) {
+function loadXmlFile(input) {
   var file = input.files[0];
   if (!file) {
     return;
