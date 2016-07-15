@@ -60,7 +60,9 @@ function registerAllInputs(tagName) {
 }
 
 function addComputedField(modelFieldId, inputFieldsIds, compute) {
-  var outputElement = document.getElementById(modelFieldId);
+  var outputElement = document.createElement("output");
+  outputElement.id = modelFieldId;
+  outputElement.className = "computed";
   outputElement.data = {};
   dynamicField = getModelField(modelFieldId);
   inputFieldsIds.forEach(inputFieldId => {
@@ -70,4 +72,5 @@ function addComputedField(modelFieldId, inputFieldsIds, compute) {
       outputElement.dispatchEvent(new Event("change"));
     });
   });
+  document.body.appendChild(outputElement);
 }

@@ -23,22 +23,17 @@
     <label>Président <input id="-center+president+name"></label>
     <label>M<input name="-center+president+genre" type="radio" value="M"></label>
     <label>F<input name="-center+president+genre" type="radio" value="F"></label>
-    <output id="-center+president+genre-title"></output>
-    <output id="-center+president+genre-function"></output>
   </span>
   <span class="input">
     <label>Directeur général <input id="-center+director+name"></label>
     <label>M<input name="-center+director+genre" type="radio" value="M"></label>
     <label>F<input name="-center+director+genre" type="radio" value="F"></label>
-    <output id="-center+director+genre-title"></output>
-    <output id="-center+director+genre-function"></output>
   </span>
   <span class="input"><label>Rue <input id="-center+address+street"/></label></span>
   <span class="input"><label>Numéro <input id="-center+address+streetnumber"/></label></span>
   <span class="input"><label>Code postal <input id="-center+address+zip" placeholder="0000" pattern="\d{4}" type="text" title="4 chiffres"/></label></span>
   <span class="input"><label>Localité <input id="-center+address+locality"/></label></span>
     <!-- TODO: "Commune" instead of "Localité"? -->
-  <output id="-center+address"></output>
   </fieldset>
 
   <fieldset id="form+beneficiary">
@@ -50,9 +45,6 @@
     <label>Prénom <input id="-beneficiary+firstname"/></label>
     <label>M<input name="-beneficiary+genre" type="radio" value="M"></label>
     <label>F<input name="-beneficiary+genre" type="radio" value="F"></label>
-    <output id="-beneficiary+genre-title"></output>
-    <output id="-beneficiary+genre-born"></output>
-    <output id="-beneficiary+genre-called"></output>
   </span>
   <span class="input">
     <label>Numéro du Registre National <input id="-beneficiary+nrn" placeholder="00.00.00-000.00" pattern="(\d[.\- ]*){11}" type="text" title="11 chiffres"/></label>
@@ -65,7 +57,6 @@
   <span class="input"><label>Code postal <input id="-beneficiary+address+zip" placeholder="0000" pattern="\d{4}" type="text" title="4 chiffres"/></label></span>
   <span class="input"><label>Localité <input id="-beneficiary+address+locality"/></label></span>
     <!-- TODO: "Commune" instead of "Localité"? -->
-  <output id="-beneficiary+address"></output>
   </fieldset>
 </div>
 

@@ -23,7 +23,7 @@ div#buttons {
   border-bottom: thin solid;
 }
 
-div#form output {
+output.computed {
   display: none;
 }
 
