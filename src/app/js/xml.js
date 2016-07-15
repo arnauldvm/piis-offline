@@ -70,7 +70,7 @@ function toXmlString() {
   return "<?xml version='1.0' ?>\n" + nodeToString(xmlDoc);
 }
 
-function toXml() {
+function viewXml() {
   var xmlString = toXmlString();
   var xmlWindow = window.open('data:text/xml;charset=utf-8,' + escape(xmlString));
   //xmlWindow.focus();
