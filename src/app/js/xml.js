@@ -73,7 +73,7 @@ function toXmlString() {
 function toXml() {
   var xmlString = toXmlString();
   var xmlWindow = window.open('data:text/xml;charset=utf-8,' + escape(xmlString));
-  xmlWindow.focus();
+  //xmlWindow.focus();
 }
 
 function saveXmlFile(link) {
