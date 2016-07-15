@@ -72,6 +72,7 @@
 <div id="buttons">
   <button onclick="window.print()">Imprimer</button>
   <button onclick="toXml()">to XML</button>
+  <a class="pseudobutton" download="PIIS.xml" onclick="saveXmlFile(this)">Save XML</a>
   <label><span class="pseudobutton">from XML</span><input type="file" onchange="readXmlFile(this)" style="display: none"/></label>
 </div>
 

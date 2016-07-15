@@ -9,7 +9,7 @@ function nodeToString(xmlNode) {
    return (new XMLSerializer()).serializeToString(xmlNode);
 }
 
-function toXml() {
+function toXmlString() {
   var xmlDoc = initXmlDoc("piis");
 
   function x() { // after http://stackoverflow.com/a/3191559
@@ -67,10 +67,18 @@ function toXml() {
        )
   );
 
-  var xmlString = "<?xml version='1.0' ?>\n" + nodeToString(xmlDoc)
+  return "<?xml version='1.0' ?>\n" + nodeToString(xmlDoc);
+}
 
+function toXml() {
+  var xmlString = toXmlString();
   var xmlWindow = window.open('data:text/xml;charset=utf-8,' + escape(xmlString));
   xmlWindow.focus();
+}
+
+function saveXmlFile(link) {
+  var xmlString = toXmlString();
+  link.href = 'data:text/xml;charset=utf-8,' + escape(xmlString);
 }
 
 function readFile(file, callback) { // after http://stackoverflow.com/a/26298948
