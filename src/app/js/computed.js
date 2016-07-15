@@ -1,5 +1,5 @@
-function addDynamicGenreDerivedField(modelFieldIdGenre, suffix, valueM, valueF) {
-  addDynamicField(modelFieldIdGenre + suffix, [modelFieldIdGenre],
+function addComputedGenreDerivedField(modelFieldIdGenre, suffix, valueM, valueF) {
+  addComputedField(modelFieldIdGenre + suffix, [modelFieldIdGenre],
     data => {
       switch (data[modelFieldIdGenre]) {
         case "M": return valueM;
@@ -9,20 +9,20 @@ function addDynamicGenreDerivedField(modelFieldIdGenre, suffix, valueM, valueF) 
     }
   );
 }
-addDynamicGenreDerivedField("-beneficiary+genre", "-title", "M.", "Mme");
-addDynamicGenreDerivedField("-beneficiary+genre", "-born", "né", "née");
-addDynamicGenreDerivedField("-beneficiary+genre", "-called", "dénommé", "dénommée");
-addDynamicGenreDerivedField("-center+president+genre", "-title", "M.", "Mme");
-addDynamicGenreDerivedField("-center+president+genre", "-function", "Président", "Présidente");
-addDynamicGenreDerivedField("-center+director+genre", "-title", "M.", "Mme");
-addDynamicGenreDerivedField("-center+director+genre", "-function", "Directeur général", "Directrice générale");
+addComputedGenreDerivedField("-beneficiary+genre", "-title", "M.", "Mme");
+addComputedGenreDerivedField("-beneficiary+genre", "-born", "né", "née");
+addComputedGenreDerivedField("-beneficiary+genre", "-called", "dénommé", "dénommée");
+addComputedGenreDerivedField("-center+president+genre", "-title", "M.", "Mme");
+addComputedGenreDerivedField("-center+president+genre", "-function", "Président", "Présidente");
+addComputedGenreDerivedField("-center+director+genre", "-title", "M.", "Mme");
+addComputedGenreDerivedField("-center+director+genre", "-function", "Directeur général", "Directrice générale");
 
 function emptyIfUndef(value) {
   if (typeof value != 'undefined' && value) return value;
   return  "";
 }
-function addDynamicAddressField(modelFieldIdAddressPrefix) {
-  addDynamicField(modelFieldIdAddressPrefix,
+function addComputedAddressField(modelFieldIdAddressPrefix) {
+  addComputedField(modelFieldIdAddressPrefix,
     [modelFieldIdAddressPrefix+"+streetnumber", modelFieldIdAddressPrefix+"+street",
      modelFieldIdAddressPrefix+"+zip", modelFieldIdAddressPrefix+"+locality"],
     data => {
@@ -34,5 +34,5 @@ function addDynamicAddressField(modelFieldIdAddressPrefix) {
     }
   );
 }
-addDynamicAddressField("-center+address");
-addDynamicAddressField("-beneficiary+address");
+addComputedAddressField("-center+address");
+addComputedAddressField("-beneficiary+address");

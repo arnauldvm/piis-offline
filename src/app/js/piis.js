@@ -59,7 +59,7 @@ function registerAllInputs(tagName) {
   });
 }
 
-function addDynamicField(modelFieldId, inputFieldsIds, compute) {
+function addComputedField(modelFieldId, inputFieldsIds, compute) {
   var outputElement = document.getElementById(modelFieldId);
   outputElement.data = {};
   dynamicField = getModelField(modelFieldId);
