@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="css/piis.css">
 <script src="js/model.js"></script>
 <script src="js/xml.js"></script>
+<script src="js/tables.js"></script>
 <script src="js/lists.js"></script>
 <script src="js/lists/municipalities.js"></script>
 
@@ -55,6 +56,15 @@
   <fieldset id="form+information">
   <h2>Informations générales</h2>
   (...)
+  </fieldset>
+
+  <fieldset id="form+steps">
+  <h2>Démarches du bénéficiaire</h2>
+  <p>Utilisez le tableau ci-dessous pour planifier les démarches que le bénéficiaire doit entreprendre.</p>
+  <table id="form+steps+table">
+    <thead><tr><th>#</th><th>Description</th><th>Date de début</th><th>Date de fin</th><th>En ordre</th><th onclick="addrow('form+steps+table')">+</th></tr></thead>
+    <tbody></tbody>
+  </table>
   </fieldset>
 </div>
 

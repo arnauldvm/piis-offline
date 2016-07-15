@@ -18,6 +18,15 @@ div#form {
   border-bottom: thin solid;
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: thin solid;
+}
+
 div#buttons {
   background: white;
   padding-bottom: 3px;
