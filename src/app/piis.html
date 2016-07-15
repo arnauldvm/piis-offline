@@ -54,8 +54,8 @@
 </div>
 
 <div id="buttons">
-  <button onclick="window.print()">Imprimer</button>
-  <button onclick="viewXml()">View XML</button>
+  <a class="pseudobutton" onclick="window.print()">Imprimer</a>
+  <a class="pseudobutton" onclick="viewXml()">View XML</a>
   <a class="pseudobutton" download="PIIS.xml" onclick="saveXmlFile(this)">Save XML</a>
   <label><span class="pseudobutton">Load XML</span><input type="file" onchange="loadXmlFile(this)" style="display: none"/></label>
 </div>
