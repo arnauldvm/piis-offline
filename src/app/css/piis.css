@@ -14,13 +14,17 @@ div#form, div#form div {
 
 div#form {
   padding-bottom: 0.5cm;
-  /*margin-bottom: 0.5cm;*/
+  margin-bottom: 0.5cm;
+  border-bottom: thin solid;
 }
 
 div#buttons {
-  padding-bottom: 0.5cm;
-  margin-bottom: 0.5cm;
-  border-bottom: thin solid;
+  background: white;
+  padding-bottom: 3px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
 }
 
 output.computed {
