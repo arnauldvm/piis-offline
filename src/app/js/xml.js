@@ -17,9 +17,9 @@ function toXmlString() {
   function x(eltName, ...children) { // after http://stackoverflow.com/a/3191559
     const node = xmlDoc.createElement(eltName);
 
-    for (const child of children) {
+    for (let child of children) {
         if (child === undefined || child === null) continue;
-        if(typeof child == 'string') {
+        if (typeof child == 'string') {
             child = xmlDoc.createTextNode(child);
         }
         node.appendChild(child);
