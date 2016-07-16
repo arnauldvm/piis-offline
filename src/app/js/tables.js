@@ -9,5 +9,11 @@ function addrow(tableId) {
     tr.appendChild(document.createElement("td"));
   }
   tr.lastElementChild.textContent = "-";
+  tr.lastElementChild.onclick = evt => removerow(tr);
   tbody.appendChild(tr);
+}
+
+function removerow(tr) {
+  const table = tr.parentNode.parentNode;
+  table.deleteRow(tr.rowIndex);
 }
