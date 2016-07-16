@@ -1,9 +1,11 @@
+"use strict";
+
 function addrow(tableId) {
-  var table = document.getElementById(tableId);
-  var numCols = table.tHead.rows[0].childElementCount;
-  var tbody = table.tBodies[0];
-  var tr = document.createElement("tr");
-  for (var i = 0; i<numCols; i++) {
+  const table = document.getElementById(tableId);
+  const numCols = table.tHead.rows[0].childElementCount;
+  const tbody = table.tBodies[0];
+  const tr = document.createElement("tr");
+  for (let i = 0; i<numCols; i++) {
     tr.appendChild(document.createElement("td"));
   }
   tr.lastElementChild.textContent = "-";

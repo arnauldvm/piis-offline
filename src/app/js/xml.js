@@ -1,7 +1,9 @@
+"use strict";
+
 function initXmlDoc(rootElement) {
-  var xmlString = `<${rootElement}></${rootElement}>`;
-  var parser = new DOMParser();
-  var xmlDoc = parser.parseFromString(xmlString, "text/xml"); //important to use "text/xml"
+  const xmlString = `<${rootElement}></${rootElement}>`;
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(xmlString, "text/xml"); //important to use "text/xml"
   return xmlDoc;
 }
 
@@ -10,13 +12,12 @@ function nodeToString(xmlNode) {
 }
 
 function toXmlString() {
-  var xmlDoc = initXmlDoc("piis");
+  const xmlDoc = initXmlDoc("piis");
 
-  function x() { // after http://stackoverflow.com/a/3191559
-    var node = xmlDoc.createElement(arguments[0]);
+  function x(eltName, ...children) { // after http://stackoverflow.com/a/3191559
+    const node = xmlDoc.createElement(eltName);
 
-    for(var i = 1; i < arguments.length; i++) {
-        child = arguments[i];
+    for (const child of children) {
         if (child === undefined || child === null) continue;
         if(typeof child == 'string') {
             child = xmlDoc.createTextNode(child);
@@ -71,18 +72,18 @@ function toXmlString() {
 }
 
 function viewXml() {
-  var xmlString = toXmlString();
-  var xmlWindow = window.open('data:text/xml;charset=utf-8,' + escape(xmlString));
+  const xmlString = toXmlString();
+  const xmlWindow = window.open('data:text/xml;charset=utf-8,' + escape(xmlString));
   //xmlWindow.focus();
 }
 
 function saveXmlFile(link) {
-  var xmlString = toXmlString();
+  const xmlString = toXmlString();
   link.href = 'data:text/xml;charset=utf-8,' + escape(xmlString);
 }
 
 function readFile(file, callback) { // after http://stackoverflow.com/a/26298948
-  var reader = new FileReader();
+  const reader = new FileReader();
   reader.onload = evt => callback(evt.target.result);
   reader.readAsText(file);
 }
@@ -92,35 +93,35 @@ function parseXml(str) {
 }
 
 function fromXml(xmlString) {
-  var xmlDoc = parseXml(xmlString);
+  const xmlDoc = parseXml(xmlString);
 
   function p(node, map) {
-    for (tag in map) {
-      var FUN = map[tag];
-      Array.from(node.getElementsByTagName(tag)).forEach(child => {
+    for (const tag in map) {
+      const FUN = map[tag];
+      for (const child of node.getElementsByTagName(tag)) {
         console.debug(`Parsing ${tag}`);
         FUN(child);
-      });
+      }
     }
   }
 
   function s(node, modelFieldId) {
-    var value = node.textContent;
+    const value = node.textContent;
     if (value === undefined || value === null) return;
     console.debug(`Set ${value} to ${modelFieldId}`);
-    var inputElement = document.getElementById(modelFieldId);
+    const inputElement = document.getElementById(modelFieldId);
     inputElement.value = value;
     inputElement.dispatchEvent(new Event("change"));
   }
   function sr(node, modelFieldId) {
-    var value = node.textContent;
+    const value = node.textContent;
     if (value === undefined || value === null) return;
     console.debug(`Set ${value} to radio ${modelFieldId}`);
-    var inputElements = Array.from(document.getElementsByName(modelFieldId));
-    inputElements.forEach(e => {
+    const inputElements = Array.from(document.getElementsByName(modelFieldId));
+    for (const e of inputElements) {
       e.checked = (e.value === value);
       if (e.checked) e.dispatchEvent(new Event("change"));
-    });
+    }
   }
 
   p(xmlDoc, {
@@ -159,9 +160,7 @@ function fromXml(xmlString) {
 }
 
 function loadXmlFile(input) {
-  var file = input.files[0];
-  if (!file) {
-    return;
-  }
+  const file = input.files[0];
+  if (!file) return;
   readFile(file, result => fromXml(result));
 }

@@ -1,3 +1,5 @@
+"use strict";
+
 function addComputedGenreDerivedField(modelFieldIdGenre, suffix, valueM, valueF) {
   addComputedField(modelFieldIdGenre + suffix, [modelFieldIdGenre],
     data => {

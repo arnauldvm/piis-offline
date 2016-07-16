@@ -1,10 +1,12 @@
-var model = {};
+"use strict";
+
+const model = {};
 
 function getModelField(modelFieldId) {
   if (modelFieldId in model) {
     return model[modelFieldId];
   }
-  var field = { value: undefined, callbacks: [] };
+  const field = { value: undefined, callbacks: [] };
   model[modelFieldId] = field;
   return field;
 }
@@ -17,60 +19,56 @@ function getIdAttrName(eltType) {
 }
 
 function sync(evt) {
-  var inputElement = evt.target;
+  const inputElement = evt.target;
   if (!inputElement.checkValidity()) {
     // Unfortunately the browser does not display the error message automatically (unless the form is submitted under Chrome)
     alert("Valeur incorrecte!\n(Valeurs autorisées : " + inputElement.title + ")");
   }
-  var modelFieldId = inputElement.getAttribute(getIdAttrName(inputElement.type));
-  var field = getModelField(modelFieldId);
+  const modelFieldId = inputElement.getAttribute(getIdAttrName(inputElement.type));
+  const field = getModelField(modelFieldId);
   field.value = inputElement.value;
   notifyAll(modelFieldId);
 }
 
 function notifyAll(modelFieldId) {
-  var field = getModelField(modelFieldId);
-  model[modelFieldId].callbacks.forEach(function(callback) {
+  const field = getModelField(modelFieldId);
+  for (const callback of model[modelFieldId].callbacks) {
     callback(field.value);
-  });
+  }
 }
 
 function registerAllOutputs(tagName) {
-  var elements = Array.from(document.getElementsByTagName(tagName));
-    // getElementsByTagName is HTMLCollection, not Array!
-  elements.forEach(element => {
-    if (!element.hasAttribute("idref")) return;
-    var modelFieldId = element.getAttribute("idref");
+  for (const element of document.getElementsByTagName(tagName)) {
+    if (!element.hasAttribute("idref")) continue;
+    const modelFieldId = element.getAttribute("idref");
     console.debug(`output: @idref=${modelFieldId}`);
     getModelField(modelFieldId).callbacks.push(function(fieldValue) {
       element.value = fieldValue;
     });
-  });
+  }
 }
 
 function registerAllInputs(tagName) {
-  var elements = Array.from(document.getElementsByTagName(tagName));
-    // getElementsByTagName is HTMLCollection, not Array!
-  elements.forEach(element => {
-    var idAttrName = getIdAttrName(element.type);
-    if (!element.hasAttribute(idAttrName)) return;
+  for (const element of document.getElementsByTagName(tagName)) {
+    const idAttrName = getIdAttrName(element.type);
+    if (!element.hasAttribute(idAttrName)) continue;
     console.debug(`input: @${idAttrName}=${element.getAttribute(idAttrName)}, @value=${element.value}`);
     element.addEventListener("change", sync);
-  });
+  }
 }
 
 function addComputedField(modelFieldId, inputFieldsIds, compute) {
-  var outputElement = document.createElement("output");
+  const outputElement = document.createElement("output");
   outputElement.id = modelFieldId;
   outputElement.className = "computed";
   outputElement.data = {};
-  dynamicField = getModelField(modelFieldId);
-  inputFieldsIds.forEach(inputFieldId => {
+  const dynamicField = getModelField(modelFieldId);
+  for (const inputFieldId of inputFieldsIds) {
     getModelField(inputFieldId).callbacks.push(function(fieldValue) {
       outputElement.data[inputFieldId] = fieldValue;
       outputElement.value = compute(outputElement.data);
       outputElement.dispatchEvent(new Event("change"));
     });
-  });
+  }
   document.body.appendChild(outputElement);
 }
