@@ -2,17 +2,17 @@ h1 {
   text-align: center;
 }
 
-div#form .input {
+#form .input {
   width: 45%;
   float: left;
   margin: 0.3em;
 }
 
-div#form, div#form div {
+#form, #form div {
   overflow: auto;
 }
 
-div#form {
+#form {
   padding-bottom: 0.5cm;
   margin-bottom: 0.5cm;
   border-bottom: thin solid;
@@ -39,7 +39,7 @@ table, th, td {
   background-color: lightgrey;
 }
 
-div#buttons {
+#buttons {
   background: white;
   padding-bottom: 3px;
   position: fixed;
