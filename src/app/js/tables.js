@@ -14,6 +14,10 @@ function addrow(tableId) {
   for (let i = 0; i<numCols; i++) {
     tr.appendChild(document.createElement("td"));
   }
+  {
+    tr.firstElementChild.className = "first-column";
+    tr.lastElementChild.className = "last-column";
+  }  // because not all styling properties are supported by col element
   tr.lastElementChild.textContent = "-";
   tr.lastElementChild.onclick = evt => removerow(tr);
   tbody.appendChild(tr);

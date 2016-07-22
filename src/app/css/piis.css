@@ -27,6 +27,18 @@ table, th, td {
   border: thin solid;
 }
 
+.first-column {
+  text-align: center; /* not supported by col element :-( */
+  font-style: oblique; /* not supported by col element :-( */
+}
+
+.last-column {
+  text-align: center; /* not supported by col element :-( */
+  color: grey; /* not supported by col element :-( */
+  border-style: outset;
+  background-color: lightgrey;
+}
+
 div#buttons {
   background: white;
   padding-bottom: 3px;
