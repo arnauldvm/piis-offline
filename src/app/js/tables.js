@@ -1,6 +1,6 @@
 "use strict";
 
-function updateRowIdx(tbody) {
+function resetRowsIndex(tbody) {
   for (let i = 0; i<tbody.rows.length; i++) {
     tbody.rows[i].firstElementChild.textContent = i+1;
   }
@@ -21,11 +21,11 @@ function addrow(tableId) {
   tr.lastElementChild.textContent = "-";
   tr.lastElementChild.onclick = evt => removerow(tr);
   tbody.appendChild(tr);
-  updateRowIdx(tbody);
+  resetRowsIndex(tbody);
 }
 
 function removerow(tr) {
   const table = tr.parentNode.parentNode;
   table.deleteRow(tr.rowIndex);
-  updateRowIdx(table.tBodies[0]);
+  resetRowsIndex(table.tBodies[0]);
 }
